@@ -5,13 +5,17 @@
 
 #include "../mDebug.h"
 
-Mqtt_Process::Mqtt_Process(const Configuration_Mqtt_struct &config,
+namespace Networking {
+
+namespace Mqtt {
+
+Process::Process(const Configuration_Mqtt_struct &config,
                            Scheduler &manager,
                            ProcPriority priority,
                            uint32_t period,
                            int iterations,
                            uint16_t overSchedThresh)
-    : Process (manager, priority, period, iterations, overSchedThresh),
+    : ::Process (manager, priority, period, iterations, overSchedThresh),
       _config(config),
       _mqtt_client(nullptr),
       _espClient(nullptr)
@@ -19,12 +23,12 @@ Mqtt_Process::Mqtt_Process(const Configuration_Mqtt_struct &config,
     HERE;
 }
 
-Mqtt_Process::~Mqtt_Process()
+Process::~Process()
 {
     cleanup();
 }
 
-void Mqtt_Process::service()
+void Process::service()
 {
     if(!WiFi.isConnected())
     {
@@ -56,7 +60,7 @@ void Mqtt_Process::service()
     }
 }
 
-void Mqtt_Process::setup()
+void Process::setup()
 {
 
     if(WiFi.isConnected())
@@ -75,7 +79,7 @@ void Mqtt_Process::setup()
     }
 }
 
-void Mqtt_Process::cleanup()
+void Process::cleanup()
 {
     if(_mqtt_client != nullptr)
     {
@@ -94,7 +98,7 @@ void Mqtt_Process::cleanup()
     }
 }
 
-void Mqtt_Process::onEnable()
+void Process::onEnable()
 {
     if(WiFi.isConnected())
     {
@@ -107,7 +111,7 @@ void Mqtt_Process::onEnable()
     }
 }
 
-void Mqtt_Process::startMqtt()
+void Process::startMqtt()
 {
     START;
     if(_mqtt_client != nullptr)
@@ -116,13 +120,13 @@ void Mqtt_Process::startMqtt()
         _mqtt_client->setServer(_config.mqtt_broker, _config.mqtt_port);
         Serial.println("MQTT: Setting callback!");
         using namespace std::placeholders;
-        _mqtt_client->setCallback(std::bind(&Mqtt_msg_Processor::processMqttMessages , _config.msg_processor, _1, _2, _3));
+        _mqtt_client->setCallback(std::bind(&Message_Processor::processMqttMessages , _config.msg_processor, _1, _2, _3));
         reconnect();
     }
     END;
 }
 
-void Mqtt_Process::stopMqtt()
+void Process::stopMqtt()
 {
     if(_mqtt_client != nullptr)
     {
@@ -130,7 +134,7 @@ void Mqtt_Process::stopMqtt()
     }
 }
 
-void Mqtt_Process::reconnect()
+void Process::reconnect()
 {
     auto client = _mqtt_client;
     if(client != nullptr && !client->connected())
@@ -154,7 +158,9 @@ void Mqtt_Process::reconnect()
 }
 
 
-void Mqtt_Process::onDisable()
+void Process::onDisable()
 {
     stopMqtt();
 }
+
+}}

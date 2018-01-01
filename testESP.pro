@@ -65,18 +65,18 @@ OTHER_FILES += platformio.ini
 SOURCES += \
     src/testESP.cpp \
     src/processes/blink_process.cpp \
-    src/processes/network_process.cpp \
     src/processes/mqtt_process.cpp \
     src/mDebug.cpp \
-    src/processes/mqtt_msg_processor.cpp
+    src/processes/mqtt_msg_processor.cpp \
+    src/processes/network_manager.cpp
 
 HEADERS += src/strings.h \
     ../wlan.hpp \
     src/processes/blink_process.h \
     src/config.h \
-    src/processes/network_process.h \
     src/processes/mqtt_process.h \
     src/mDebug.h \
-    src/processes/mqtt_msg_processor.h
+    src/processes/mqtt_msg_processor.h \
+    src/processes/network_manager.h
 
 DISTFILES +=

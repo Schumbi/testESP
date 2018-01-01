@@ -7,7 +7,11 @@
 
 #include "processes/mqtt_msg_processor.h"
 
-class Mqtt_Process : public Process
+namespace Networking {
+
+namespace Mqtt {
+
+class Process : public ::Process
 {
 public:
 
@@ -15,17 +19,17 @@ public:
     {
         const char* mqtt_broker;
         uint16_t mqtt_port;
-        Mqtt_msg_Processor *msg_processor;
+        Message_Processor *msg_processor;
     };
 
-    Mqtt_Process(const Configuration_Mqtt_struct &config,
+    Process(const Configuration_Mqtt_struct &config,
                  Scheduler &manager,
                  ProcPriority priority = LOW_PRIORITY,
                  uint32_t period = SERVICE_SECONDLY,
                  int iterations = RUNTIME_FOREVER,
                  uint16_t overSchedThresh = OVERSCHEDULED_NO_WARNING);
 
-    virtual ~Mqtt_Process();
+    virtual ~Process();
 
     // Process interface
 protected:
@@ -45,6 +49,6 @@ private:
     WiFiClient *_espClient;
 };
 
-
+}}
 
 #endif // MQTT_PROCESS_H

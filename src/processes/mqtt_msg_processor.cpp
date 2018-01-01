@@ -1,21 +1,24 @@
 #include "mqtt_msg_processor.h"
 
-Mqtt_msg_Processor::Mqtt_msg_Processor(Scheduler &manager,
-                                                   ProcPriority priority,
-                                                   uint32_t period,
-                                                   int iterations,
-                                                   uint16_t overSchedThresh)
+namespace Networking {
+namespace Mqtt {
+
+Message_Processor::Message_Processor(Scheduler &manager,
+                                     ProcPriority priority,
+                                     uint32_t period,
+                                     int iterations,
+                                     uint16_t overSchedThresh)
     :Process (manager, priority, period, iterations, overSchedThresh)
 {
 
 }
 
-Mqtt_msg_Processor::~Mqtt_msg_Processor()
+Message_Processor::~Message_Processor()
 {
 
 }
 
-void Mqtt_msg_Processor::processMqttMessages(char *topic, uint8_t *payload, unsigned int length)
+void Message_Processor::processMqttMessages(char *topic, uint8_t *payload, unsigned int length)
 {
     Serial.println(topic);
     String msg;
@@ -27,7 +30,9 @@ void Mqtt_msg_Processor::processMqttMessages(char *topic, uint8_t *payload, unsi
     Serial.println(msg);
 }
 
-void Mqtt_msg_Processor::service()
+void Message_Processor::service()
 {
     ;
 }
+
+}}

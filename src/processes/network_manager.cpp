@@ -1,4 +1,4 @@
-#include "network_process.h"
+#include "network_manager.h"
 
 #include <ESP8266WiFi.h>
 #include <ESP8266WebServer.h>
@@ -6,7 +6,9 @@
 
 #include "../mDebug.h"
 
-Network_Process::Network_Process(const Configuration_Network_struct &net,
+namespace Networking {
+
+Manager::Manager(const Configuration_Network_struct &net,
                                  Scheduler &manager,
                                  ProcPriority priority,
                                  uint32_t period,
@@ -22,12 +24,12 @@ Network_Process::Network_Process(const Configuration_Network_struct &net,
 }
 
 
-Network_Process::~Network_Process()
+Manager::~Manager()
 {
     stopOTAServer();
 }
 
-void Network_Process::service()
+void Manager::service()
 {
     if(WiFi.status() != WL_CONNECTED)
     {
@@ -59,14 +61,14 @@ void Network_Process::service()
     END;
 }
 
-void Network_Process::cleanup()
+void Manager::cleanup()
 {
     Serial.println(String(__func__));
     stopOTAServer();
 }
 
 // gets started when process added to sched
-void Network_Process::setup()
+void Manager::setup()
 {
     Serial.println(String(__func__));
     startWifi();
@@ -74,7 +76,7 @@ void Network_Process::setup()
     startOTAServer();
 }
 
-void Network_Process::startOTAServer()
+void Manager::startOTAServer()
 {
     START;
     if(WiFi.isConnected())
@@ -112,7 +114,7 @@ void Network_Process::startOTAServer()
     END;
 }
 
-void Network_Process::stopOTAServer()
+void Manager::stopOTAServer()
 {
     if(_updateServer != nullptr)
     {
@@ -124,7 +126,7 @@ void Network_Process::stopOTAServer()
     stopWebServer();
 }
 
-void Network_Process::startWebServer(uint16_t updatePort)
+void Manager::startWebServer(uint16_t updatePort)
 {
     START;
     if(_httpServer == nullptr)
@@ -146,7 +148,7 @@ void Network_Process::startWebServer(uint16_t updatePort)
     END;
 }
 
-void Network_Process::stopWebServer()
+void Manager::stopWebServer()
 {
     if(_httpServer != nullptr)
     {
@@ -157,7 +159,7 @@ void Network_Process::stopWebServer()
     Serial.println("Stoped webserver");
 }
 
-void Network_Process::startWifi()
+void Manager::startWifi()
 {
     Serial.println("Start Wifi");
 
@@ -167,4 +169,6 @@ void Network_Process::startWifi()
     WiFi.begin(_netConfig.ssid, _netConfig.ssid_password);
     WiFi.setAutoConnect(true);
     WiFi.setAutoReconnect(true);
+}
+
 }

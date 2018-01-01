@@ -6,7 +6,9 @@
 class ESP8266WebServer;
 class ESP8266HTTPUpdateServer;
 
-class Network_Process : public Process
+namespace Networking {
+
+class Manager : public Process
 {
 
 public:
@@ -22,14 +24,14 @@ public:
         uint16_t updatePort;
     };
 
-    Network_Process(const Configuration_Network_struct &net,
+    Manager(const Configuration_Network_struct &net,
                 Scheduler &manager,
                 ProcPriority priority = HIGH_PRIORITY,
                 uint32_t period = SERVICE_SECONDLY,
                 int iterations = RUNTIME_FOREVER,
                 uint16_t overSchedThresh = OVERSCHEDULED_NO_WARNING);
 
-    virtual ~Network_Process();
+    virtual ~Manager();
     bool isOTAReady()
     {
         return _httpServer != nullptr && _updateServer != nullptr;
@@ -65,5 +67,7 @@ private:
 
     Configuration_Network_struct _netConfig;
 };
+
+}
 
 #endif // WIFI_PROCESS_H
