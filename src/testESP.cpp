@@ -44,7 +44,11 @@ void setup()
     Networking::Mqtt::Process::Configuration_Mqtt_struct config_mqtt;
     config_mqtt.mqtt_broker = "192.168.1.2";
     config_mqtt.mqtt_port = MAKELIGHT_MQTT_SERVER_PORT;
-    config_mqtt.msg_processor = new Networking::Mqtt::Message_Processor(scheduler);
+
+    Networking::Mqtt::Message_Processor::Configuration_Message_Processor processor_config;
+    *processor_config.subscribed_topics.begin() = "/home/test";
+    config_mqtt.msg_processor = new Networking::Mqtt::Message_Processor(processor_config, scheduler);
+
     (new Networking::Mqtt::Process(config_mqtt, scheduler))->add(true);
 
     // blinky process

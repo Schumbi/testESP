@@ -23,11 +23,11 @@ public:
     };
 
     Process(const Configuration_Mqtt_struct &config,
-                 Scheduler &manager,
-                 ProcPriority priority = LOW_PRIORITY,
-                 uint32_t period = SERVICE_SECONDLY,
-                 int iterations = RUNTIME_FOREVER,
-                 uint16_t overSchedThresh = OVERSCHEDULED_NO_WARNING);
+            Scheduler &manager,
+            ProcPriority priority = LOW_PRIORITY,
+            uint32_t period = SERVICE_SECONDLY,
+            int iterations = RUNTIME_FOREVER,
+            uint16_t overSchedThresh = OVERSCHEDULED_NO_WARNING);
 
     virtual ~Process();
 

@@ -118,7 +118,7 @@ void Process::startMqtt()
     {
         Serial.println(String("MQTT: ") + String(_config.mqtt_broker) + ":"+ _config.mqtt_port);
         _mqtt_client->setServer(_config.mqtt_broker, _config.mqtt_port);
-        Serial.println("MQTT: Setting callback!");
+
         using namespace std::placeholders;
         _mqtt_client->setCallback(std::bind(&Message_Processor::processMqttMessages , _config.msg_processor, _1, _2, _3));
         reconnect();
@@ -145,8 +145,16 @@ void Process::reconnect()
         {
             Serial.println("connected");
             // ... and resubscribe
-            client->subscribe("/home/test");
+            auto topics = _config.msg_processor->getSubscriptions();
+            for(auto it = topics.begin(); it != topics.end(); it++)
+            {
 
+                if((*it).length() != 0)
+                {
+                    Serial.println(String("Subscribe to ") + (*it).c_str());
+                    client->subscribe((*it).c_str());
+                }
+            }
             setPeriod(10);
         }
         else

@@ -3,12 +3,19 @@
 namespace Networking {
 namespace Mqtt {
 
-Message_Processor::Message_Processor(Scheduler &manager,
+
+const std::array<String, Message_Processor::const_topicCount> &Message_Processor::getSubscriptions() const
+{
+    return _config.subscribed_topics;
+}
+
+Message_Processor::Message_Processor(const Configuration_Message_Processor &config,
+                                     Scheduler &manager,
                                      ProcPriority priority,
                                      uint32_t period,
                                      int iterations,
                                      uint16_t overSchedThresh)
-    :Process (manager, priority, period, iterations, overSchedThresh)
+    :Process (manager, priority, period, iterations, overSchedThresh), _config(config)
 {
 
 }
