@@ -5,7 +5,7 @@
 #include <PubSubClient.h>
 #include <WiFiClient.h>
 
-#include "processes/mqtt_msg_processor.h"
+#include "networking/mqtt_msg_processor.h"
 
 namespace Networking {
 
@@ -19,7 +19,7 @@ public:
     {
         const char* mqtt_broker;
         uint16_t mqtt_port;
-        Message_Processor *msg_processor;
+        Abstract_Message_Processor *msg_processor;
     };
 
     Process(const Configuration_Mqtt_struct &config,

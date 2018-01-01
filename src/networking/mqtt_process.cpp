@@ -120,7 +120,7 @@ void Process::startMqtt()
         _mqtt_client->setServer(_config.mqtt_broker, _config.mqtt_port);
 
         using namespace std::placeholders;
-        _mqtt_client->setCallback(std::bind(&Message_Processor::processMqttMessages , _config.msg_processor, _1, _2, _3));
+        _mqtt_client->setCallback(std::bind(&Abstract_Message_Processor::mqttMessageCallback , _config.msg_processor, _1, _2, _3));
         reconnect();
     }
     END;

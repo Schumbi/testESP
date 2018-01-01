@@ -5,10 +5,11 @@
 
 #include <ESP8266WiFi.h>
 
+#include "networking/network_manager.h"
+#include "networking/mqtt_process.h"
+#include "networking/mqtt_msg_processor.h"
+
 #include "processes/blink_process.h"
-#include "processes/network_manager.h"
-#include "processes/mqtt_process.h"
-#include "processes/mqtt_msg_processor.h"
 
 #include "../../wlan.hpp"
 
@@ -45,14 +46,11 @@ void setup()
     config_mqtt.mqtt_broker = "192.168.1.2";
     config_mqtt.mqtt_port = MAKELIGHT_MQTT_SERVER_PORT;
 
-    Networking::Mqtt::Message_Processor::Configuration_Message_Processor processor_config;
+    Networking::Mqtt::Abstract_Message_Processor::Configuration_Message_Processor processor_config;
     *processor_config.subscribed_topics.begin() = "/home/test";
-    config_mqtt.msg_processor = new Networking::Mqtt::Message_Processor(processor_config, scheduler);
+    config_mqtt.msg_processor = new Blink_Process(processor_config, scheduler);
 
     (new Networking::Mqtt::Process(config_mqtt, scheduler))->add(true);
-
-    // blinky process
-    (new Blink_Process(scheduler))->add(true);
 
     Serial.println("Setup done!");
 }
