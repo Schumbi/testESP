@@ -5,11 +5,11 @@ else {
     HOMEDIR += $$(HOME)
 }
 
-INCLUDEPATH += "/home/data/ralf/devel/makelight/OTAtester/src"
-INCLUDEPATH += "/home/data/ralf/devel/makelight/OTAtester/lib/ArduinoProcessScheduler/src"
-INCLUDEPATH += "/home/data/ralf/devel/makelight/OTAtester/lib/ArduinoRingBuffer"
-INCLUDEPATH += "/home/data/ralf/devel/makelight/OTAtester/lib/PubSubClient/src"
-INCLUDEPATH += "/home/data/ralf/devel/makelight/OTAtester/.piolibdeps/NeoPixelBus_ID547/src"
+INCLUDEPATH += "./src"
+INCLUDEPATH += "./lib/ArduinoProcessScheduler/src"
+INCLUDEPATH += "./lib/ArduinoRingBuffer"
+INCLUDEPATH += "./lib/PubSubClient/src"
+INCLUDEPATH += ".piolibdeps/NeoPixelBus_ID547/src"
 INCLUDEPATH += "$${HOMEDIR}/.platformio/packages/framework-arduinoespressif8266/tools/sdk/include"
 INCLUDEPATH += "$${HOMEDIR}/.platformio/packages/framework-arduinoespressif8266/tools/sdk/lwip/include"
 INCLUDEPATH += "$${HOMEDIR}/.platformio/packages/framework-arduinoespressif8266/cores/esp8266"
@@ -63,7 +63,7 @@ DEFINES += "WEBSOCKETS_NETWORK_TYPE=NETWORK_ESP8266_ASYNC"
 OTHER_FILES += platformio.ini
 
 SOURCES += \
-        src/OTAtester.cpp \
+    src/testESP.cpp \
     src/processes/blink_process.cpp \
     src/processes/network_process.cpp \
     src/processes/mqtt_process.cpp \
